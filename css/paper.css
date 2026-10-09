@@ -85,6 +85,7 @@ body[data-screen="home"] .open-book { display: none; }
 .banner-sheet { width: 100%; transform: rotate(-2deg); }
 .card-sheet {
   width: 100%;
+  max-height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;

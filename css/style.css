@@ -7,6 +7,7 @@
   --paper-3: #dccfae;
   --ink: #2b2118;
   --fact: #2f7d4f;
+  --fact-text: #266b42;  /* darker green for small text: AA contrast on paper */
   --fake: #b8322a;
   --mustard: #d9a441;
   --denim: #3e5c76;
@@ -45,7 +46,7 @@ button:focus-visible, input:focus-visible, .card:focus-visible {
 }
 h1, h2, p, ol, ul { margin: 0; padding: 0; }
 [hidden] { display: none !important; }
-.c-fact { color: var(--fact); }
+.c-fact { color: var(--fact-text); }
 .c-fake { color: var(--fake); }
 
 #desk { position: fixed; inset: 0; z-index: 0; background: var(--desk); }
@@ -248,10 +249,11 @@ h1:focus, h2:focus { outline: none; }
   -webkit-user-select: none;
 }
 .card-cat { font-family: var(--font-hand); font-size: 1.1rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--denim); margin-bottom: 6px; }
-.card-text { font-size: clamp(1.15rem, 4.9vw, 1.7rem); line-height: 1.3; }
-.card.revealed .card-text { font-size: clamp(.98rem, 4vw, 1.3rem); }
+.card-text { font-size: calc(clamp(1.15rem, 4.9vw, 1.7rem) * var(--fit, 1)); line-height: 1.3; }
+.card.revealed .card-text { font-size: calc(clamp(.98rem, 4vw, 1.3rem) * var(--fit, 1)); }
 .card.revealed { cursor: default; }
 .card-hint { font-family: var(--font-hand); font-size: 1.4rem; font-weight: 700; margin-top: 14px; color: var(--denim); }
+.card-reveal { margin-top: calc(12px * var(--fit, 1)); }
 .card-reveal { margin-top: 12px; padding-top: 10px; border-top: 2px dashed rgba(43,33,24,.35); }
 .stamp {
   display: inline-block;
@@ -260,18 +262,18 @@ h1:focus, h2:focus { outline: none; }
   border: 5px solid currentColor;
   border-radius: 8px;
   font-family: var(--font-marker);
-  font-size: clamp(2rem, 9vw, 3.2rem);
+  font-size: calc(clamp(2rem, 9vw, 3.2rem) * var(--fit, 1));
   line-height: 1.15;
   letter-spacing: .06em;
   transform: rotate(-6deg);
 }
 .stamp.is-fact { color: var(--fact); }
 .stamp.is-fake { color: var(--fake); }
-.reveal-text { font-size: clamp(.95rem, 3.8vw, 1.15rem); line-height: 1.35; }
+.reveal-text { font-size: calc(clamp(.95rem, 3.8vw, 1.15rem) * var(--fit, 1)); line-height: 1.35; }
 
 .lock-hint { flex: none; text-align: center; font-family: var(--font-hand); font-size: 1.35rem; font-weight: 700; min-height: 1.4em; }
-.chips { flex: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-.chip { position: relative; display: flex; min-height: 48px; }
+.chips { flex: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.chip { position: relative; display: flex; min-height: 48px; min-width: 0; }
 .chip-main {
   flex: 1; min-width: 0;
   display: flex; align-items: center; gap: 8px;
@@ -362,8 +364,11 @@ h1:focus, h2:focus { outline: none; }
 
 /* ---------- responsive ---------- */
 @media (min-width: 480px) {
-  .chips { grid-template-columns: repeat(4, 1fr); }
+  .chips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .chip-main .name { font-size: 1rem; }
+}
+@media (max-height: 600px) and (orientation: portrait) {
+  .lock-hint { display: none; }
 }
 @media (max-height: 640px) {
   .screen-inner { padding-top: 60px; gap: 14px; }
@@ -374,7 +379,21 @@ h1:focus, h2:focus { outline: none; }
   .screen-inner { padding-top: 56px; gap: 10px; max-width: 760px; }
   .home-inner { gap: 14px; }
   .how-list { font-size: 1.05rem; }
-  .chips { grid-template-columns: repeat(4, 1fr); }
+  .play-inner {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 42%);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "top top" "card hint" "card chips" "card next";
+    column-gap: 12px;
+    align-content: stretch;
+  }
+  .topbar { grid-area: top; }
+  .card-area { grid-area: card; }
+  .lock-hint { grid-area: hint; align-self: end; }
+  .chips { grid-area: chips; align-self: start; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .next-btn { grid-area: next; align-self: end; }
+  .chip-main .name { font-size: .85rem; }
 }
 @media (max-width: 340px) {
   .tag-btn { min-width: 180px; padding-left: 36px; padding-right: 20px; }

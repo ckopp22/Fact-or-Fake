@@ -142,6 +142,16 @@
     });
   }
 
+  // Shrink the card text until the statement (and reveal) fit without scrolling; scrolling stays as a last resort.
+  function fitCard() {
+    var c = els.card, f = 1;
+    c.style.setProperty('--fit', '1');
+    while (c.scrollHeight > c.clientHeight + 1 && f > 0.6) {
+      f -= 0.04;
+      c.style.setProperty('--fit', f.toFixed(2));
+    }
+  }
+
   function showCard(animate) {
     var card = FoF.deck.draw();
     state.phase = 'question';
@@ -164,6 +174,7 @@
     if (!reduced()) restartClass(wrap, 'entering');
     audio('whoosh');
     updateChips();
+    fitCard();
   }
 
   function reveal() {
@@ -197,6 +208,7 @@
       restartClass($('reveal-text'), 'fade');
       restartClass(els.cardArea, 'shake');
     }
+    fitCard();
     audio('reveal', card.answer);
     if (document.activeElement === els.card) els.next.focus({ preventScroll: true });
   }
@@ -364,6 +376,8 @@
       books.style.setProperty('--px', (e.clientX / window.innerWidth * 2 - 1).toFixed(2));
     });
 
+    window.addEventListener('resize', function () { if (state.screen === 'play') fitCard(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (state.screen === 'play') fitCard(); });
     bindSetup();
     bindPlay();
     bindWin();

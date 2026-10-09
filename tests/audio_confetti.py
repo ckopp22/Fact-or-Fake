@@ -59,7 +59,7 @@ with sync_playwright() as p:
     drawn = page.evaluate("""() => { const c = document.getElementById('confetti'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++; return n; }""")
     check(drawn > 500, f'confetti pixels drawn: {drawn}')
     check(pre > n3, 'fanfare scheduled on win')
-    page.screenshot(path=sys.argv[1] if len(sys.argv) > 1 else '/dev/null')
+    if len(sys.argv) > 1: page.screenshot(path=sys.argv[1])
     page.wait_for_timeout(4500)
     after = page.evaluate("""() => { const c = document.getElementById('confetti'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++; return n; }""")
     check(0 < after < drawn, f'settles to a light trickle after burst: {after} px (was {drawn})')
