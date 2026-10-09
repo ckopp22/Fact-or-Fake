@@ -13,6 +13,7 @@
       if (on) s.removeAttribute('inert'); else s.setAttribute('inert', '');
     });
     FoF.state.screen = name;
+    document.body.setAttribute('data-screen', name);
     if (FoF.ui && FoF.ui.onEnter) FoF.ui.onEnter(name);
     var h = next.querySelector('h1, h2');
     if (h && name !== 'play') h.focus({ preventScroll: true });

@@ -15,7 +15,65 @@
 </head>
 <body>
 
-<div id="desk" aria-hidden="true"></div>
+<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="clip" viewBox="0 0 48 100">
+      <path d="M30 62V20a10 10 0 0 0-20 0v62a14 14 0 0 0 28 0V30" fill="none" stroke="currentColor" style="stroke-width:var(--cw,4)" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30 62V20a10 10 0 0 0-20 0v62a14 14 0 0 0 28 0V30" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round" transform="translate(-1.2 -1)"/>
+    </symbol>
+    <symbol id="pin" viewBox="0 0 32 44">
+      <path d="M16 22v20" stroke="#8b9097" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="16" cy="13" r="11" fill="currentColor"/>
+      <path d="M5.5 16a11 11 0 0 0 21 0z" fill="rgba(0,0,0,.2)"/>
+      <circle cx="12.5" cy="9.5" r="3.5" fill="rgba(255,255,255,.55)"/>
+    </symbol>
+    <symbol id="star" viewBox="0 0 40 40">
+      <path d="M20 3l4.5 12L37 15.5 27 23.5 30.5 36 20 28.5 9.5 36 13 23.5 3 15.5 15.5 15z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="arrow" viewBox="0 0 80 40">
+      <path d="M4 30C25 4 50 4 72 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M60 22l13 3-4-14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="pencil" viewBox="0 0 150 18">
+      <path d="M14 2L0 9l14 7z" fill="#f1d9a8"/><path d="M3.6 7.4L0 9l3.6 1.6z" fill="#2b2118"/>
+      <rect x="14" y="2" width="112" height="14" fill="#d9a441"/>
+      <rect x="14" y="2" width="112" height="4" fill="rgba(255,255,255,.28)"/>
+      <rect x="14" y="12" width="112" height="4" fill="rgba(0,0,0,.2)"/>
+      <rect x="126" y="2" width="10" height="14" fill="#aab0b6"/>
+      <rect x="136" y="2" width="12" height="14" rx="3" fill="#d98a8a"/>
+    </symbol>
+    <filter id="cloth" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 -.12" result="d"/>
+      <feComposite in="d" in2="SourceAlpha" operator="in" result="dn"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="dn"/></feMerge>
+    </filter>
+    <filter id="ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="2" seed="2" result="n2"/>
+      <feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.7" result="mask"/>
+      <feComposite in="d" in2="mask" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
+<div id="desk" aria-hidden="true">
+  <span class="coffee-ring"></span>
+  <span class="scrap scrap-1"></span>
+  <span class="scrap scrap-2"></span>
+  <span class="scrap scrap-3"></span>
+  <svg class="doodle d-star1" viewBox="0 0 40 40"><use href="#star"/></svg>
+  <svg class="doodle d-star2" viewBox="0 0 40 40"><use href="#star"/></svg>
+  <svg class="doodle d-arrow" viewBox="0 0 80 40"><use href="#arrow"/></svg>
+  <svg class="pencil" viewBox="0 0 150 18"><use href="#pencil"/></svg>
+  <svg class="open-book" viewBox="0 0 220 120">
+    <path d="M2 24v86c38-10 78-8 108 4 30-12 70-14 108-4V24" fill="none" stroke="#7a5230" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M110 20C80 8 40 8 8 18v86c32-10 72-8 102 4z" fill="#f6efdc" stroke="rgba(43,33,24,.45)"/>
+    <path d="M110 20c30-12 70-12 102-2v86c-32-10-72-12-102 4z" fill="#efe3c4" stroke="rgba(43,33,24,.45)"/>
+    <path d="M24 34c24-5 52-4 76 4M24 48c24-5 52-4 76 4M24 62c24-5 52-4 76 4M24 76c24-5 52-4 76 4M124 38c24-8 52-9 76-4M124 52c24-8 52-9 76-4M124 66c24-8 52-9 76-4" fill="none" stroke="rgba(43,33,24,.3)" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</div>
 
 <button id="btn-mute" class="icon-btn" type="button" aria-pressed="false" aria-label="Mute sound" data-silent>
   <svg class="ico-on" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -27,7 +85,12 @@
   <!-- HOME -->
   <section id="screen-home" class="screen active" aria-labelledby="home-title">
     <div class="screen-inner home-inner">
-      <div class="title-banner">
+      <div class="home-decor" aria-hidden="true">
+        <svg class="doodle h-star1" viewBox="0 0 40 40"><use href="#star"/></svg>
+        <svg class="doodle h-star2" viewBox="0 0 40 40"><use href="#star"/></svg>
+        <svg class="doodle h-arrow" viewBox="0 0 80 40"><use href="#arrow"/></svg>
+      </div>
+      <div class="title-banner" data-rough data-sheet="banner-sheet" data-clips="tl:silver tr:red tc:tape">
         <h1 id="home-title" class="title" tabindex="-1"><span class="t-fact">FACT</span> <span class="t-or">or</span> <span class="t-fake">FAKE</span></h1>
         <p class="tagline">True... or totally made up?</p>
       </div>
@@ -35,13 +98,26 @@
         <button class="tag-btn tag-primary" type="button" data-go="setup">PLAY</button>
         <button class="tag-btn" type="button" data-go="how">HOW TO PLAY</button>
       </div>
+      <div class="books" aria-hidden="true">
+        <svg viewBox="0 0 360 170" preserveAspectRatio="xMidYMax meet">
+          <ellipse cx="180" cy="168" rx="176" ry="4" fill="rgba(43,33,24,.3)"/>
+          <g transform="rotate(-8 17 168)"><g filter="url(#cloth)"><rect x="6" y="92" width="22" height="76" rx="2" fill="#7b4fa0"/><rect x="6" y="104" width="22" height="4" fill="#d9a441"/><rect x="6" y="150" width="22" height="4" fill="#d9a441"/></g></g>
+          <g filter="url(#cloth)"><rect x="36" y="136" width="284" height="32" rx="3" fill="#3e5c76"/><rect x="36" y="136" width="284" height="8" rx="3" fill="rgba(255,255,255,.12)"/><rect x="50" y="136" width="6" height="32" fill="#d9a441"/><rect x="298" y="136" width="6" height="32" fill="#d9a441"/><path d="M110 153c14-6 22 6 36 0s22-6 36 0 22 4 34-1" fill="none" stroke="rgba(246,239,220,.8)" stroke-width="2.2" stroke-linecap="round"/></g>
+          <g filter="url(#cloth)"><rect x="56" y="108" width="248" height="28" rx="3" fill="#8b3a2f"/><rect x="56" y="108" width="248" height="7" rx="3" fill="rgba(255,255,255,.12)"/><rect x="70" y="108" width="6" height="28" fill="#e8d9a8"/><rect x="284" y="108" width="6" height="28" fill="#e8d9a8"/><path d="M120 123c12-5 20 5 32 0s20-5 32 0 20 3 30-1" fill="none" stroke="rgba(246,239,220,.8)" stroke-width="2" stroke-linecap="round"/></g>
+          <g filter="url(#cloth)"><rect x="42" y="78" width="262" height="30" rx="3" fill="#4f6f52"/><rect x="42" y="78" width="262" height="8" rx="3" fill="rgba(255,255,255,.12)"/><rect x="58" y="78" width="6" height="30" fill="#e8d9a8"/><rect x="282" y="78" width="6" height="30" fill="#e8d9a8"/><path d="M128 93c14-6 22 6 36 0s22-6 36 0" fill="none" stroke="rgba(246,239,220,.8)" stroke-width="2.2" stroke-linecap="round"/></g>
+          <g filter="url(#cloth)"><rect x="64" y="56" width="220" height="22" rx="3" fill="#d9a441"/><rect x="64" y="56" width="220" height="6" rx="3" fill="rgba(255,255,255,.18)"/><rect x="78" y="56" width="5" height="22" fill="#8b3a2f"/><rect x="266" y="56" width="5" height="22" fill="#8b3a2f"/><path d="M110 67c12-4 18 4 30 0s20-4 32 0" fill="none" stroke="rgba(43,33,24,.7)" stroke-width="2" stroke-linecap="round"/></g>
+          <g transform="rotate(-5 175 42)"><g filter="url(#cloth)"><rect x="86" y="30" width="186" height="26" rx="3" fill="#6b4a73"/><rect x="86" y="30" width="186" height="6" rx="3" fill="rgba(255,255,255,.14)"/><rect x="98" y="30" width="5" height="26" fill="#e8d9a8"/><rect x="256" y="30" width="5" height="26" fill="#e8d9a8"/></g></g>
+          <g filter="url(#cloth)"><rect x="326" y="72" width="14" height="96" rx="2" fill="#b8322a"/><rect x="326" y="84" width="14" height="4" fill="#e8d9a8"/><rect x="326" y="150" width="14" height="4" fill="#e8d9a8"/></g>
+          <g filter="url(#cloth)"><rect x="341" y="50" width="18" height="118" rx="2" fill="#2f6f7d"/><rect x="341" y="64" width="18" height="4" fill="#d9a441"/><rect x="341" y="148" width="18" height="4" fill="#d9a441"/></g>
+        </svg>
+      </div>
     </div>
   </section>
 
   <!-- HOW TO PLAY -->
   <section id="screen-how" class="screen" aria-labelledby="how-title">
     <div class="screen-inner how-inner">
-      <div class="notebook">
+      <div class="notebook" data-rough data-clips="tc:pin">
         <h2 id="how-title" class="page-title" tabindex="-1">How to play</h2>
         <ol class="how-list">
           <li>Pick who's playing and the score you're playing to.</li>
@@ -62,7 +138,7 @@
   <section id="screen-setup" class="screen" aria-labelledby="setup-title">
     <div class="screen-inner setup-inner">
       <h2 id="setup-title" class="page-title on-desk" tabindex="-1">Who's playing?</h2>
-      <div class="notebook">
+      <div class="notebook" data-rough data-clips="tr:blue">
         <div class="field">
           <span class="label" id="lbl-count">Players</span>
           <div class="stepper" role="group" aria-labelledby="lbl-count">
@@ -101,7 +177,7 @@
       </header>
 
       <div id="card-area" class="card-area">
-        <div id="card" class="card" role="button" tabindex="0" aria-live="polite">
+        <div id="card" class="card" data-rough data-sheet="card-sheet" data-clips="tr:silver tl:tape" role="button" tabindex="0" aria-live="polite">
           <div class="card-cat" id="card-cat"></div>
           <p id="card-text" class="card-text"></p>
           <div id="card-reveal" class="card-reveal" hidden>
@@ -121,11 +197,11 @@
   <!-- WIN -->
   <section id="screen-win" class="screen" aria-labelledby="win-title">
     <div class="screen-inner win-inner">
-      <div class="winner-badge">
+      <div class="winner-badge" data-rough data-clips="tc:silver tr:red">
         <span class="winner-word">WINNER</span>
         <h2 id="win-title" class="winner-name" tabindex="-1"></h2>
       </div>
-      <div class="notebook board">
+      <div class="notebook board" data-rough data-clips="tl:green">
         <ol id="board" class="board-list"></ol>
       </div>
       <div class="actions">
@@ -155,6 +231,7 @@
 <script src="js/deck.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/confetti.js"></script>
+<script src="js/paper.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>

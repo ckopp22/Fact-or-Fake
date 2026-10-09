@@ -47,7 +47,7 @@ with sync_playwright() as p:
         stamp = page.inner_text('#stamp')
         assert stamp == ('FACT' if ans else 'FAKE'), (stamp, ans)
         if cards == 1:
-            shot(page, '5-reveal')
+            page.wait_for_timeout(700); shot(page, '5-reveal')
             # chip tap must not advance; undo works; double award blocked
             page.click('.chip[data-id="0"] .chip-main', force=True)
             assert page.evaluate('FoF.state.players[0].score') == 1

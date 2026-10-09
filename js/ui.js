@@ -146,9 +146,10 @@
     var card = FoF.deck.draw();
     state.phase = 'question';
     state.awarded = {};
-    var el = els.card;
-    el.classList.remove('revealed', 'leaving', 'flipping', 'entering');
-    el.style.setProperty('--rot', (Math.random() * 4 - 2).toFixed(2) + 'deg');
+    var el = els.card, wrap = els.cardWrap;
+    el.classList.remove('revealed');
+    wrap.classList.remove('leaving', 'flipping', 'entering');
+    wrap.style.setProperty('--rot', (Math.random() * 4 - 2).toFixed(2) + 'deg');
     el.setAttribute('role', 'button');
     el.tabIndex = 0;
     $('card-cat').textContent = CATS[card.cat] || '';
@@ -160,7 +161,7 @@
     $('round-label').textContent = 'Round ' + state.round;
     els.next.disabled = true;
     els.cardArea.classList.remove('shake');
-    if (!reduced()) restartClass(el, 'entering');
+    if (!reduced()) restartClass(wrap, 'entering');
     audio('whoosh');
     updateChips();
   }
@@ -174,8 +175,8 @@
     $('lock-hint').textContent = 'Who got it right? Tap your name!';
     updateChips();
     if (reduced()) { showReveal(card); return; }
-    els.card.classList.remove('entering');
-    restartClass(els.card, 'flipping');
+    els.cardWrap.classList.remove('entering');
+    restartClass(els.cardWrap, 'flipping');
     later(function () { showReveal(card); }, 240);
   }
 
@@ -210,8 +211,8 @@
       later(function () { busy = false; }, reduced() ? 0 : 350);
     };
     if (reduced()) { go(); return; }
-    els.card.classList.remove('entering', 'flipping');
-    els.card.classList.add('leaving');
+    els.cardWrap.classList.remove('entering', 'flipping');
+    els.cardWrap.classList.add('leaving');
     later(go, 280);
   }
 
@@ -261,9 +262,10 @@
       if (e.target.closest('.chip-undo')) undo(id); else award(id, chip);
     });
     ['animationend'].forEach(function (ev) {
-      els.card.addEventListener(ev, function (e) {
-        if (e.animationName === 'cardIn') els.card.classList.remove('entering');
-        if (e.animationName === 'flip') els.card.classList.remove('flipping');
+      els.cardWrap.addEventListener(ev, function (e) {
+        if (e.target !== els.cardWrap) return;
+        if (e.animationName === 'cardIn') els.cardWrap.classList.remove('entering');
+        if (e.animationName === 'flip') els.cardWrap.classList.remove('flipping');
       });
       els.cardArea.addEventListener(ev, function (e) {
         if (e.animationName === 'shake') els.cardArea.classList.remove('shake');
@@ -332,7 +334,9 @@
     els.nameList = $('name-list');
     els.targetChips = $('target-chips');
     els.chips = $('chips');
+    if (FoF.paper) FoF.paper.init();
     els.card = $('card');
+    els.cardWrap = els.card.parentNode.classList.contains('sheet') ? els.card.parentNode : els.card;
     els.cardArea = $('card-area');
     els.next = $('btn-next');
 
@@ -351,6 +355,13 @@
     $('btn-mute').addEventListener('click', function () {
       store.setMuted(!state.muted);
       syncMute();
+    });
+
+    // Gentle parallax on the book stack (mouse only).
+    var books = document.querySelector('.books');
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || !books || state.screen !== 'home') return;
+      books.style.setProperty('--px', (e.clientX / window.innerWidth * 2 - 1).toFixed(2));
     });
 
     bindSetup();

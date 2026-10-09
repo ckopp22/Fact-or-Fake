@@ -1,1 +1,183 @@
-/* Fact or Fake: paper texture, torn edges, decor (filled in during Phase 3) */
+/* Fact or Fake: paper texture, torn edges, shadows and decor.
+   Textures are inline SVG (feTurbulence) embedded as data URIs, so there are no image files.
+   Generated values below are the {{...}} noise tiles; edit the rules freely. */
+
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0.55 -0.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fibers: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.015 .45' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.33  0 0 0 0 0.18  0 0 0 0.55 -0.21'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --kraft: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.22  0 0 0 0 0.13  0 0 0 0 0.05  0 0 0 0.8 -0.22'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.018' numOctaves='3' seed='12' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25  0 0 0 0 0.15  0 0 0 0 0.06  0 0 0 0.9 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tex: var(--grain), var(--fibers);
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.screen-inner { position: relative; }
+
+/* ---------- desk ---------- */
+#desk {
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse at 50% 38%, rgba(255, 238, 205, .22), transparent 62%),
+    radial-gradient(ellipse at 50% 50%, transparent 52%, rgba(60, 36, 14, .34)),
+    var(--kraft), var(--mottle);
+}
+#desk > * { position: absolute; pointer-events: none; }
+
+.coffee-ring {
+  right: 11%; top: 57%;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  border: 5px solid rgba(92, 52, 20, .24);
+  border-right-color: rgba(92, 52, 20, .1);
+  box-shadow: inset 0 0 0 2px rgba(92, 52, 20, .09), 0 0 0 2px rgba(92, 52, 20, .07);
+  transform: scaleY(.95) rotate(20deg);
+}
+.scrap {
+  width: 88px; height: 66px;
+  background-color: #ece0c0;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 11px, rgba(62, 92, 118, .3) 11px 12px), var(--grain);
+  clip-path: polygon(0 4%, 12% 0, 40% 6%, 70% 0, 100% 5%, 96% 40%, 100% 70%, 94% 100%, 60% 94%, 30% 100%, 4% 92%, 0 60%, 5% 30%);
+  opacity: .92;
+}
+.scrap-1 { left: -16px; top: 9%; transform: rotate(-14deg); }
+.scrap-2 { right: -22px; top: 31%; width: 72px; transform: rotate(18deg); }
+.scrap-3 { left: 5%; bottom: 24%; transform: rotate(8deg); width: 64px; height: 50px; }
+.doodle { color: rgba(43, 33, 24, .5); width: 34px; height: 34px; position: absolute; pointer-events: none; overflow: visible; }
+.d-star1 { left: 7%; top: 27%; transform: rotate(-12deg); }
+.d-star2 { right: 9%; top: 12%; width: 26px; height: 26px; transform: rotate(14deg); }
+.d-arrow { left: 4%; bottom: 36%; width: 64px; height: 32px; transform: rotate(-8deg); }
+.pencil { width: 150px; height: 18px; left: -34px; bottom: 9%; transform: rotate(-24deg); filter: drop-shadow(2px 3px 2px rgba(43, 33, 24, .35)); }
+.open-book { width: 210px; right: -34px; bottom: -14px; transform: rotate(-6deg); filter: drop-shadow(0 4px 4px rgba(43, 33, 24, .3)); }
+body[data-screen="home"] .open-book { display: none; }
+
+/* ---------- paper sheets with torn edges ---------- */
+.sheet {
+  position: relative;
+  isolation: isolate;
+  filter: drop-shadow(0 1px 0 rgba(43, 33, 24, .2)) drop-shadow(0 6px 9px rgba(43, 33, 24, .32));
+}
+.sheet::before {               /* pale torn-fiber edge peeking out around the paper */
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  background: #fbf7ea;
+  clip-path: var(--tear, none);
+}
+.sheet::after {                /* folded-over corner */
+  content: "";
+  position: absolute;
+  right: 0; bottom: 0;
+  width: 22px; height: 22px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(135deg, #f8f1dc 0%, #dccb9f 100%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  filter: drop-shadow(-1px -1px 1px rgba(43, 33, 24, .35));
+}
+.sheet-paper { position: relative; }
+
+.sheet-paper, .chip-main, .step-btn, .target-chip, .exit-btn, .dialog, .icon-btn {
+  background-image: var(--tex);
+}
+.board-list li, .card-reveal { background-image: none; }
+
+.banner-sheet { width: 100%; transform: rotate(-2deg); }
+.card-sheet {
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  transform: rotate(var(--rot, 0deg));
+}
+.card-sheet .card { flex: 0 1 auto; max-height: none; }
+
+/* paperclips, tape, pins sit on the wrapper so the torn clip-path never cuts them */
+.deco { position: absolute; z-index: 3; pointer-events: none; }
+.deco-tl { left: 12px; top: -20px; transform: rotate(-14deg); }
+.deco-tr { right: 14px; top: -20px; transform: rotate(12deg); }
+.deco-tc { left: 50%; top: -16px; transform: translateX(-50%) rotate(-3deg); }
+.clip { width: 22px; height: 48px; }
+.clip svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(1px 2px 1px rgba(43, 33, 24, .4)); }
+.clip-silver { color: #a9afb5; --cw: 3.4; }
+.clip-red { color: #c0392b; --cw: 5; }
+.clip-blue { color: #2c6fbb; --cw: 5; }
+.clip-green { color: #2e8b57; --cw: 5; }
+.clip-yellow { color: #d9a441; --cw: 5; }
+.tape {
+  width: 78px; height: 24px;
+  background-color: rgba(236, 219, 160, .78);
+  background-image: var(--grain);
+  clip-path: polygon(0 0, 100% 0, 97% 20%, 100% 40%, 97% 60%, 100% 80%, 97% 100%, 0 100%, 3% 80%, 0 60%, 3% 40%, 0 20%);
+}
+.deco-tl.tape { left: -14px; top: -8px; transform: rotate(-38deg); }
+.pin { width: 24px; height: 33px; color: #b8322a; top: -12px; }
+.pin svg { display: block; width: 100%; height: 100%; filter: drop-shadow(1px 3px 1px rgba(43, 33, 24, .4)); }
+
+@keyframes jiggle {
+  0%, 86%, 100% { transform: rotate(-14deg); }
+  88% { transform: rotate(-24deg); }
+  91% { transform: rotate(-6deg); }
+  94% { transform: rotate(-20deg); }
+  97% { transform: rotate(-11deg); }
+}
+.banner-sheet .deco-tl { animation: jiggle 8s ease-in-out 2s infinite; transform-origin: 50% 20%; }
+
+/* ---------- home ---------- */
+.home-decor { position: absolute; inset: 0; pointer-events: none; }
+.h-star1 { left: 4%; top: 8%; transform: rotate(-10deg); }
+.h-star2 { right: 6%; top: 46%; width: 28px; height: 28px; transform: rotate(16deg); }
+.h-arrow { right: 10%; top: 34%; width: 62px; height: 31px; transform: rotate(18deg) scaleX(-1); }
+.books {
+  position: absolute;
+  left: -8px; right: -8px; bottom: 0;
+  height: clamp(120px, 22vh, 176px);
+  pointer-events: none;
+  transform: translateX(calc(var(--px, 0) * 8px));
+  transition: transform .2s ease-out;
+}
+.books svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.title { text-shadow: 2px 3px 0 rgba(43, 33, 24, .12); }
+.t-fact, .t-fake { display: inline-block; filter: url(#ink); }
+.tagline { color: rgba(43, 33, 24, .85); }
+
+/* ---------- notebook pages ---------- */
+.how-list {
+  line-height: 1.3;
+  font-size: clamp(1.05rem, 3.1vh, 1.4rem);
+  padding-left: 1.7em;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.3em - 1.5px), rgba(62, 92, 118, .38) calc(1.3em - 1.5px), rgba(62, 92, 118, .38) 1.3em);
+}
+.how-list li { margin: 0; padding-left: 2px; }
+.how-inner .sheet-paper::before {
+  content: "";
+  position: absolute;
+  left: 14px; top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(184, 50, 42, .4);
+}
+.page-title { text-shadow: 1px 2px 0 rgba(43, 33, 24, .1); }
+.winner-badge.sheet-paper { background-color: var(--paper); padding: 22px 14px 24px; }
+
+/* ---------- buttons ---------- */
+.tag-btn {
+  filter: drop-shadow(0 3px 0 rgba(43, 33, 24, .35)) drop-shadow(0 6px 7px rgba(43, 33, 24, .25));
+}
+.tag-btn::before { background-image: var(--tex); }
+.home-buttons .tag-btn:nth-child(1) { transform: rotate(-1.5deg); }
+.home-buttons .tag-btn:nth-child(2) { transform: rotate(1.2deg); }
+.tag-btn:active { transform: translateY(2px); }
+.chip { transition: transform .15s; }
+.chip:nth-child(odd) { transform: rotate(-.5deg); }
+.chip:nth-child(even) { transform: rotate(.5deg); }
+.chip-main { box-shadow: 0 2px 0 rgba(43, 33, 24, .4); }
+.chip.inactive .chip-main { box-shadow: none; }
+.next-btn { text-shadow: 0 1px 0 rgba(246, 239, 220, .6); }
+.lock-hint, .round-label, .target-label { text-shadow: 0 1px 0 rgba(246, 239, 220, .5); }
+
+/* ---------- ink stamps ---------- */
+.stamp, .winner-word { filter: url(#ink); mix-blend-mode: multiply; }
+.card-reveal { border-top-style: dashed; }
+
+/* numbers use the typewriter face: the marker face draws "0" as a blob */
+.chip-main .score, .board-list .pts, .board-list .rank { font-family: var(--font-type); font-weight: 700; }
