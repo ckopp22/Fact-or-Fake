@@ -5,6 +5,15 @@
   // All sounds are synthesized with the Web Audio API (no audio files).
   var VOLUME = 0.5;
   var ctx = null, master = null, noiseBuf = null, muted = false;
+  var music = null, MUSIC_VOLUME = 0.12;   // quiet looping background track
+
+  function syncMusic() {
+    if (!music) return;
+    try {
+      if (muted) music.pause();
+      else { var p = music.play(); if (p && p.catch) p.catch(function () {}); }
+    } catch (e) { /* ignore */ }
+  }
   var fakeClip = null;   // audio/fake.mp3, played on FAKE reveals
 
   function playFake() {
@@ -14,6 +23,12 @@
 
   // iOS Safari only allows audio after a user gesture, so the context is created on the first tap.
   function unlock() {
+    if (!music && window.Audio) {
+      music = new Audio('audio/music.mp3');
+      music.loop = true;
+      music.volume = MUSIC_VOLUME;
+    }
+    syncMusic();
     if (!fakeClip && window.Audio) {      // prime inside the gesture so iOS lets it play later
       fakeClip = new Audio('audio/fake.mp3');
       fakeClip.preload = 'auto';
@@ -48,6 +63,7 @@
 
   function setMuted(m) {
     muted = !!m;
+    syncMusic();
     if (master) master.gain.setValueAtTime(muted ? 0 : VOLUME, ctx.currentTime);
   }
 
