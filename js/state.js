@@ -7,7 +7,7 @@
   var INKS = ['#c0392b', '#2c6fbb', '#2e8b57', '#7b4fa0', '#e0782a', '#1f9d9a', '#d6609a', '#7a5230'];
   var TARGETS = [5, 10, 15, 20];
 
-  var saved = { names: [], count: 2, target: 10, muted: false, seen: [] };
+  var saved = { names: [], count: 2, target: 10, muted: false, music: true, seen: [] };
 
   function load() {
     try {
@@ -16,6 +16,7 @@
       if (raw.count >= 2 && raw.count <= 8) saved.count = raw.count | 0;
       if (TARGETS.indexOf(raw.target) >= 0) saved.target = raw.target;
       saved.muted = !!raw.muted;
+      if (raw.music === false) saved.music = false;
       if (Array.isArray(raw.seen)) saved.seen = raw.seen.filter(function (x) { return typeof x === 'string'; });
     } catch (e) { /* storage unavailable or corrupt: use defaults */ }
   }
@@ -105,14 +106,16 @@
   }
 
   function setMuted(m) { state.muted = saved.muted = !!m; save(); }
+  function setMusic(on) { state.music = saved.music = !!on; save(); }
 
   load();
   state.muted = saved.muted;
+  state.music = saved.music;
 
   FoF.state = state;
   FoF.store = {
     saved: saved, save: save, INKS: INKS, TARGETS: TARGETS, MAX_NAME: MAX_NAME,
     defaultName: defaultName, cleanNames: cleanNames, newGame: newGame, replay: replay,
-    award: award, undo: undo, standings: standings, setMuted: setMuted
+    award: award, undo: undo, standings: standings, setMuted: setMuted, setMusic: setMusic
   };
 })();

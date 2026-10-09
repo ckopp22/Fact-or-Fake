@@ -340,6 +340,10 @@
     b.setAttribute('aria-pressed', String(state.muted));
     b.setAttribute('aria-label', state.muted ? 'Unmute sound' : 'Mute sound');
     audio('setMuted', state.muted);
+    var m = $('btn-music');
+    m.setAttribute('aria-pressed', String(!state.music));
+    m.setAttribute('aria-label', state.music ? 'Turn music off' : 'Turn music on');
+    audio('setMusic', state.music);
   }
 
   function init() {
@@ -364,6 +368,10 @@
       var b = e.target.closest('button');
       if (b && !b.disabled && !b.hasAttribute('data-silent')) audio('tick');
     }, true);
+    $('btn-music').addEventListener('click', function () {
+      store.setMusic(!state.music);
+      syncMute();
+    });
     $('btn-mute').addEventListener('click', function () {
       store.setMuted(!state.muted);
       syncMute();

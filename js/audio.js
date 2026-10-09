@@ -5,12 +5,12 @@
   // All sounds are synthesized with the Web Audio API (no audio files).
   var VOLUME = 0.5;
   var ctx = null, master = null, noiseBuf = null, muted = false;
-  var music = null, MUSIC_VOLUME = 0.12;   // quiet looping background track
+  var music = null, MUSIC_VOLUME = 0.05, musicOn = true;   // quiet looping background track
 
   function syncMusic() {
     if (!music) return;
     try {
-      if (muted) music.pause();
+      if (muted || !musicOn) music.pause();
       else { var p = music.play(); if (p && p.catch) p.catch(function () {}); }
     } catch (e) { /* ignore */ }
   }
@@ -59,6 +59,11 @@
     } catch (e) {
       ctx = null;
     }
+  }
+
+  function setMusic(on) {
+    musicOn = !!on;
+    syncMusic();
   }
 
   function setMuted(m) {
@@ -163,6 +168,7 @@
   FoF.audio = {
     unlock: unlock,
     setMuted: setMuted,
+    setMusic: setMusic,
     tick: function () { play('tick'); },
     whoosh: function () { play('whoosh'); },
     reveal: function (isFact) { play(isFact ? 'revealFact' : 'revealFake'); if (!isFact) playFake(); },

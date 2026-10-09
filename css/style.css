@@ -110,6 +110,7 @@ h1:focus, h2:focus { outline: none; }
 .icon-btn[aria-pressed="true"] .ico-on { display: none; }
 .icon-btn[aria-pressed="true"] .ico-off { display: block; color: var(--fake); }
 .icon-btn:active { transform: translateY(1px); }
+#btn-music { right: calc(var(--safe-r) + 64px); }
 
 /* ---------- tag buttons ---------- */
 .tag-btn {
@@ -224,7 +225,7 @@ h1:focus, h2:focus { outline: none; }
   flex-direction: column;
   gap: 6px;
 }
-.topbar { flex: none; display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding-right: 56px; gap: 8px; }
+.topbar { flex: none; display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding-right: 112px; gap: 8px; }
 .topbar-info { display: flex; flex-direction: column; line-height: 1.1; }
 .round-label { font-family: var(--font-marker); font-size: 1.15rem; }
 .target-label { font-family: var(--font-hand); font-size: 1.25rem; font-weight: 700; }
