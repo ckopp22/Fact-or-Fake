@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c9a77c">
+<title>Fact or Fake</title>
+<meta name="description" content="A pass-and-play party game of surprising truths and convincing lies. Fact or Fake?">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='8' y='6' width='48' height='52' rx='4' fill='%23f6efdc' stroke='%232b2118' stroke-width='4'/%3E%3Cpath d='M20 34l9 9 16-20' fill='none' stroke='%232f7d4f' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/paper.css">
+</head>
+<body>
+
+<div id="desk" aria-hidden="true"></div>
+
+<button id="btn-mute" class="icon-btn" type="button" aria-pressed="false" aria-label="Mute sound" data-silent>
+  <svg class="ico-on" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <svg class="ico-off" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+
+<main id="app">
+
+  <!-- HOME -->
+  <section id="screen-home" class="screen active" aria-labelledby="home-title">
+    <div class="screen-inner home-inner">
+      <div class="title-banner">
+        <h1 id="home-title" class="title" tabindex="-1"><span class="t-fact">FACT</span> <span class="t-or">or</span> <span class="t-fake">FAKE</span></h1>
+        <p class="tagline">True... or totally made up?</p>
+      </div>
+      <div class="home-buttons">
+        <button class="tag-btn tag-primary" type="button" data-go="setup">PLAY</button>
+        <button class="tag-btn" type="button" data-go="how">HOW TO PLAY</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO PLAY -->
+  <section id="screen-how" class="screen" aria-labelledby="how-title">
+    <div class="screen-inner how-inner">
+      <div class="notebook">
+        <h2 id="how-title" class="page-title" tabindex="-1">How to play</h2>
+        <ol class="how-list">
+          <li>Pick who's playing and the score you're playing to.</li>
+          <li>A card shows a statement. Read it out loud.</li>
+          <li>Everyone locks in an answer: <b class="c-fact">Fact</b> or <b class="c-fake">Fake</b>. Thumbs up or down, a hand signal, or write it down.</li>
+          <li>Tap the card to reveal the truth.</li>
+          <li>Everyone who was right taps their own name for a point. Tap fast!</li>
+          <li>Tap anywhere else for the next card. First to the target score wins.</li>
+        </ol>
+      </div>
+      <div class="actions">
+        <button class="tag-btn tag-primary" type="button" data-go="home">GOT IT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYER SETUP -->
+  <section id="screen-setup" class="screen" aria-labelledby="setup-title">
+    <div class="screen-inner setup-inner">
+      <h2 id="setup-title" class="page-title on-desk" tabindex="-1">Who's playing?</h2>
+      <div class="notebook">
+        <div class="field">
+          <span class="label" id="lbl-count">Players</span>
+          <div class="stepper" role="group" aria-labelledby="lbl-count">
+            <button id="count-dec" type="button" class="step-btn" aria-label="Fewer players">&minus;</button>
+            <output id="count-val" aria-live="polite">2</output>
+            <button id="count-inc" type="button" class="step-btn" aria-label="More players">+</button>
+          </div>
+        </div>
+        <ul id="name-list" class="name-list"></ul>
+        <div class="field">
+          <span class="label" id="lbl-target">Play to</span>
+          <div id="target-chips" class="target-chips" role="radiogroup" aria-labelledby="lbl-target">
+            <button type="button" class="target-chip" role="radio" aria-checked="false" data-target="5">5</button>
+            <button type="button" class="target-chip" role="radio" aria-checked="true" data-target="10">10</button>
+            <button type="button" class="target-chip" role="radio" aria-checked="false" data-target="15">15</button>
+            <button type="button" class="target-chip" role="radio" aria-checked="false" data-target="20">20</button>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="btn-start" class="tag-btn tag-primary" type="button">START GAME</button>
+        <button class="tag-btn tag-ghost" type="button" data-go="home">BACK</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMEPLAY -->
+  <section id="screen-play" class="screen" aria-label="Game">
+    <div class="play-inner">
+      <header class="topbar">
+        <div class="topbar-info">
+          <span id="round-label" class="round-label">Round 1</span>
+          <span id="target-label" class="target-label">Playing to 10</span>
+        </div>
+        <button id="btn-exit" class="exit-btn" type="button" data-silent>Exit</button>
+      </header>
+
+      <div id="card-area" class="card-area">
+        <div id="card" class="card" role="button" tabindex="0" aria-live="polite" aria-label="Statement card">
+          <div class="card-cat" id="card-cat"></div>
+          <p id="card-text" class="card-text"></p>
+          <div id="card-reveal" class="card-reveal" hidden>
+            <div id="stamp" class="stamp" aria-hidden="true"></div>
+            <p id="reveal-text" class="reveal-text"></p>
+          </div>
+          <p id="card-hint" class="card-hint">Tap card to reveal</p>
+        </div>
+      </div>
+
+      <p id="lock-hint" class="lock-hint">Lock in your answers!</p>
+      <div id="chips" class="chips"></div>
+      <button id="btn-next" class="next-btn" type="button" data-silent>Next Card &rarr;</button>
+    </div>
+  </section>
+
+  <!-- WIN -->
+  <section id="screen-win" class="screen" aria-labelledby="win-title">
+    <div class="screen-inner win-inner">
+      <div class="winner-badge">
+        <span class="winner-word">WINNER</span>
+        <h2 id="win-title" class="winner-name" tabindex="-1"></h2>
+      </div>
+      <div class="notebook board">
+        <ol id="board" class="board-list"></ol>
+      </div>
+      <div class="actions">
+        <button id="btn-again" class="tag-btn tag-primary" type="button">PLAY AGAIN</button>
+        <button id="btn-menu" class="tag-btn tag-ghost" type="button">MENU</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<dialog id="dlg-exit" class="dialog" aria-labelledby="dlg-exit-title">
+  <h2 id="dlg-exit-title">Leave this game?</h2>
+  <p>Scores will be lost.</p>
+  <div class="dialog-actions">
+    <button id="exit-cancel" class="tag-btn tag-ghost" type="button" data-silent>KEEP PLAYING</button>
+    <button id="exit-confirm" class="tag-btn tag-primary" type="button">EXIT</button>
+  </div>
+</dialog>
+
+<noscript><p style="padding:2rem;text-align:center">Fact or Fake needs JavaScript to run.</p></noscript>
+
+<script src="data/statements.js"></script>
+<script src="js/state.js"></script>
+<script src="js/deck.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/confetti.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
