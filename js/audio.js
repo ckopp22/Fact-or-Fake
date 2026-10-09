@@ -5,9 +5,22 @@
   // All sounds are synthesized with the Web Audio API (no audio files).
   var VOLUME = 0.5;
   var ctx = null, master = null, noiseBuf = null, muted = false;
+  var fakeClip = null;   // audio/fake.mp3, played on FAKE reveals
+
+  function playFake() {
+    if (!fakeClip || muted) return;
+    try { fakeClip.currentTime = 0; fakeClip.volume = VOLUME * 2; var p = fakeClip.play(); if (p && p.catch) p.catch(function () {}); } catch (e) { /* ignore */ }
+  }
 
   // iOS Safari only allows audio after a user gesture, so the context is created on the first tap.
   function unlock() {
+    if (!fakeClip && window.Audio) {      // prime inside the gesture so iOS lets it play later
+      fakeClip = new Audio('audio/fake.mp3');
+      fakeClip.preload = 'auto';
+      fakeClip.muted = true;
+      var pr = fakeClip.play();
+      if (pr && pr.then) pr.then(function () { fakeClip.pause(); fakeClip.currentTime = 0; fakeClip.muted = false; }).catch(function () { fakeClip.muted = false; });
+    }
     if (ctx) {
       if (ctx.state === 'suspended') ctx.resume();
       return;
@@ -94,16 +107,7 @@
       tone('sine', 2349, 2349, t + 0.26, 0.45, 0.07);
     },
     revealFake: function (t) {
-      thump(t);
-      var o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = env(t + 0.1, 0.01, 0.42, 0.34);
-      o.type = 'sawtooth';
-      o.frequency.setValueAtTime(160, t + 0.1);
-      o.frequency.exponentialRampToValueAtTime(80, t + 0.5);
-      f.type = 'lowpass';
-      f.frequency.value = 700;
-      o.connect(f); f.connect(g);
-      o.start(t + 0.1); o.stop(t + 0.6);
-      tone('square', 110, 70, t + 0.1, 0.4, 0.12);
+      thump(t);   // the Fake.mp3 clip plays on top (see playFake)
     },
     pop: function (t, score) {
       var base = 480 + Math.min(score || 0, 20) * 30;     // pitch climbs with the player's score
@@ -145,7 +149,7 @@
     setMuted: setMuted,
     tick: function () { play('tick'); },
     whoosh: function () { play('whoosh'); },
-    reveal: function (isFact) { play(isFact ? 'revealFact' : 'revealFake'); },
+    reveal: function (isFact) { play(isFact ? 'revealFact' : 'revealFake'); if (!isFact) playFake(); },
     pop: function (score) { play('pop', score); },
     undo: function () { play('undo'); },
     fanfare: function () { play('fanfare'); }
