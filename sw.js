@@ -1,8 +1,8 @@
-var CACHE = 'fof-v3';
+var CACHE = 'fof-v4';
 var ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css', 'css/paper.css',
   'data/statements.js', 'data/easy.js', 'data/hard.js', 'js/state.js', 'js/deck.js', 'js/audio.js', 'js/confetti.js',
-  'js/paper.js', 'js/ui.js', 'js/main.js', 'audio/fake.mp3', 'audio/music.mp3',
+  'js/paper.js', 'js/ui.js', 'js/main.js', 'audio/fake.mp3', 'audio/fact.mp3', 'audio/music.mp3',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'
 ];
 

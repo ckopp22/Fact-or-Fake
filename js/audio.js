@@ -14,11 +14,12 @@
       else { var p = music.play(); if (p && p.catch) p.catch(function () {}); }
     } catch (e) { /* ignore */ }
   }
-  var fakeClip = null;   // audio/fake.mp3, played on FAKE reveals
+  var clips = {};   // audio/fake.mp3 and audio/fact.mp3, played on reveals
 
-  function playFake() {
-    if (!fakeClip || muted) return;
-    try { fakeClip.currentTime = 0; fakeClip.volume = VOLUME * 2; var p = fakeClip.play(); if (p && p.catch) p.catch(function () {}); } catch (e) { /* ignore */ }
+  function playClip(name) {
+    var c = clips[name];
+    if (!c || muted) return;
+    try { c.currentTime = 0; c.volume = VOLUME * 2; var p = c.play(); if (p && p.catch) p.catch(function () {}); } catch (e) { /* ignore */ }
   }
 
   // iOS Safari only allows audio after a user gesture, so the context is created on the first tap.
@@ -29,13 +30,14 @@
       music.volume = MUSIC_VOLUME;
     }
     syncMusic();
-    if (!fakeClip && window.Audio) {      // prime inside the gesture so iOS lets it play later
-      fakeClip = new Audio('audio/fake.mp3');
-      fakeClip.preload = 'auto';
-      fakeClip.muted = true;
-      var pr = fakeClip.play();
-      if (pr && pr.then) pr.then(function () { fakeClip.pause(); fakeClip.currentTime = 0; fakeClip.muted = false; }).catch(function () { fakeClip.muted = false; });
-    }
+    ['fake', 'fact'].forEach(function (name) {   // prime inside the gesture so iOS lets them play later
+      if (clips[name] || !window.Audio) return;
+      var c = clips[name] = new Audio('audio/' + name + '.mp3');
+      c.preload = 'auto';
+      c.muted = true;
+      var pr = c.play();
+      if (pr && pr.then) pr.then(function () { c.pause(); c.currentTime = 0; c.muted = false; }).catch(function () { c.muted = false; });
+    });
     if (ctx) {
       if (ctx.state === 'suspended') ctx.resume();
       return;
@@ -114,22 +116,14 @@
   }
 
   var sounds = {
+    revealFake: function (t) { thump(t); },
     tick: function (t) {
       noise(t, 0.045, 'bandpass', 3200, 2400, 1.2, 0.28, 0.002);
     },
     whoosh: function (t) {
       noise(t, 0.3, 'bandpass', 350, 2600, 0.9, 0.3, 0.1);
     },
-    revealFact: function (t) {
-      thump(t);
-      tone('triangle', 784, 784, t + 0.12, 0.5, 0.3);     // G5
-      tone('sine', 1568, 1568, t + 0.12, 0.4, 0.08);
-      tone('triangle', 1175, 1175, t + 0.26, 0.6, 0.3);   // D6
-      tone('sine', 2349, 2349, t + 0.26, 0.45, 0.07);
-    },
-    revealFake: function (t) {
-      thump(t);   // the Fake.mp3 clip plays on top (see playFake)
-    },
+
     pop: function (t, score) {
       var base = 480 + Math.min(score || 0, 20) * 30;     // pitch climbs with the player's score
       tone('sine', base, base * 1.6, t, 0.13, 0.4, 0.004);
@@ -171,7 +165,8 @@
     setMusic: setMusic,
     tick: function () { play('tick'); },
     whoosh: function () { play('whoosh'); },
-    reveal: function (isFact) { play(isFact ? 'revealFact' : 'revealFake'); if (!isFact) playFake(); },
+    reveal: function (isFact) { if (isFact) playClip('fact'); else play('revealFake'); },
+    flipFake: function () { playClip('fake'); },
     pop: function (score) { play('pop', score); },
     undo: function () { play('undo'); },
     fanfare: function () { play('fanfare'); }

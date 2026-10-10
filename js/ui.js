@@ -196,6 +196,7 @@
     els.next.disabled = false;
     $('lock-hint').textContent = 'Who got it right? Tap your name!';
     updateChips();
+    if (!card.answer) audio('flipFake');
     if (reduced()) { showReveal(card); return; }
     els.cardWrap.classList.remove('entering');
     restartClass(els.cardWrap, 'flipping');
