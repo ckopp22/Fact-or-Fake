@@ -1,4 +1,4 @@
-var CACHE = 'fof-v2';
+var CACHE = 'fof-v3';
 var ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css', 'css/paper.css',
   'data/statements.js', 'data/easy.js', 'data/hard.js', 'js/state.js', 'js/deck.js', 'js/audio.js', 'js/confetti.js',
