@@ -403,6 +403,7 @@ h1:focus, h2:focus { outline: none; }
     padding-bottom: 12px;
   }
   .home-inner .books, .home-inner .home-decor { display: none; }
+  .title { font-size: clamp(1.8rem, 6.4vw, 4.2rem); }
   .tagline { font-size: 1.25rem; }
   .how-inner .notebook { padding: 12px 18px; }
   .how-list { column-count: 2; column-gap: 28px; font-size: clamp(.95rem, 4.2vh, 1.2rem); margin-top: 4px; }
@@ -412,7 +413,7 @@ h1:focus, h2:focus { outline: none; }
     grid-template-areas: "title book" "actions book"; grid-template-rows: auto 1fr;
     align-content: center; align-items: center; column-gap: 20px;
   }
-  .setup-inner .page-title { grid-area: title; align-self: end; }
+  .setup-inner .page-title { grid-area: title; align-self: end; line-height: 1.25; padding-bottom: 12px; }
   .setup-inner .notebook { grid-area: book; padding: 12px 16px; }
   .setup-inner .actions { grid-area: actions; align-self: start; }
   .name-list { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 8px 0; gap: 6px 12px; }
