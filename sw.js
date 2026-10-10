@@ -1,4 +1,4 @@
-var CACHE = 'fof-v4';
+var CACHE = 'fof-v5';
 var ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css', 'css/paper.css',
   'data/statements.js', 'data/easy.js', 'data/hard.js', 'js/state.js', 'js/deck.js', 'js/audio.js', 'js/confetti.js',
@@ -19,7 +19,7 @@ self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
   e.respondWith(caches.open(CACHE).then(function (c) {
     return c.match(e.request, { ignoreSearch: true }).then(function (hit) {
-      var net = fetch(e.request).then(function (r) {
+      var net = fetch(e.request, { cache: 'no-cache' }).then(function (r) {
         if (r && (r.ok || r.type === 'opaque')) c.put(e.request, r.clone());
         return r;
       }).catch(function () { return hit; });
