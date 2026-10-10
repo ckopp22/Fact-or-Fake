@@ -206,7 +206,7 @@ h1:focus, h2:focus { outline: none; }
   border-radius: 3px 3px 0 0;
 }
 .target-chips { display: flex; gap: 8px; }
-.field-center { justify-content: center; }
+.field-center { justify-content: center; margin-top: 8px; }
 .target-chip {
   min-width: 48px; height: 48px; padding: 0 10px;
   border: 2px solid var(--ink); border-radius: 24px;
