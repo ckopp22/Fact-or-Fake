@@ -60,6 +60,7 @@
     Array.prototype.forEach.call(els.targetChips.children, function (b) {
       b.setAttribute('aria-checked', String(+b.dataset.target === setup.target));
     });
+    if (FoF.fit) FoF.fit();
   }
 
   function initSetup() {

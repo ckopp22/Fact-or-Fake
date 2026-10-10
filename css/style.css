@@ -395,6 +395,39 @@ h1:focus, h2:focus { outline: none; }
   .chips { grid-area: chips; align-self: start; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .next-btn { grid-area: next; align-self: end; }
   .chip-main .name { font-size: .85rem; }
+
+  .screen-inner { padding-bottom: 12px; max-width: 900px; }
+  .home-inner {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px 28px;
+    padding-bottom: 12px;
+  }
+  .home-inner .books, .home-inner .home-decor { display: none; }
+  .tagline { font-size: 1.25rem; }
+  .how-inner .notebook { padding: 12px 18px; }
+  .how-list { column-count: 2; column-gap: 28px; font-size: clamp(.95rem, 4.2vh, 1.2rem); margin-top: 4px; }
+  .how-list li { break-inside: avoid; }
+  .setup-inner {
+    display: grid; grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+    grid-template-areas: "title book" "actions book"; grid-template-rows: auto 1fr;
+    align-content: center; align-items: center; column-gap: 20px;
+  }
+  .setup-inner .page-title { grid-area: title; align-self: end; }
+  .setup-inner .notebook { grid-area: book; padding: 12px 16px; }
+  .setup-inner .actions { grid-area: actions; align-self: start; }
+  .name-list { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 8px 0; gap: 6px 12px; }
+  .name-list input, .step-btn, .target-chip { height: 44px; }
+  .win-inner {
+    display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+    grid-template-areas: "badge board" "actions board"; align-content: center; align-items: center; column-gap: 20px;
+  }
+  .win-inner .winner-badge { grid-area: badge; align-self: end; }
+  .win-inner .board { grid-area: board; padding: 10px 14px; }
+  .win-inner .actions { grid-area: actions; align-self: start; }
+  .winner-word { font-size: 1.8rem; }
+  .winner-name { font-size: 1.7rem; margin-top: 6px; }
+  .board-list { grid-template-rows: repeat(4, auto); grid-auto-flow: column; column-gap: 16px; }
+  .board-list li { min-height: 34px; }
+  .tag-btn { min-height: 46px; }
 }
 @media (max-width: 340px) {
   .tag-btn { min-width: 180px; padding-left: 36px; padding-right: 20px; }
