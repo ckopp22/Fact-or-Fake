@@ -168,6 +168,14 @@
             <button type="button" class="target-chip" role="radio" aria-checked="false" data-target="20">20</button>
           </div>
         </div>
+        <div class="field">
+          <span class="label" id="lbl-diff">Level (kids / teens / adults)</span>
+          <div id="diff-chips" class="target-chips" role="radiogroup" aria-labelledby="lbl-diff">
+            <button type="button" class="target-chip" role="radio" aria-checked="false" data-diff="easy">Easy</button>
+            <button type="button" class="target-chip" role="radio" aria-checked="true" data-diff="medium">Medium</button>
+            <button type="button" class="target-chip" role="radio" aria-checked="false" data-diff="hard">Hard</button>
+          </div>
+        </div>
       </div>
       <div class="actions">
         <button id="btn-start" class="tag-btn tag-primary" type="button">START GAME</button>
@@ -238,6 +246,8 @@
 <noscript><p style="padding:2rem;text-align:center">Fact or Fake needs JavaScript to run.</p></noscript>
 
 <script src="data/statements.js"></script>
+<script src="data/easy.js"></script>
+<script src="data/hard.js"></script>
 <script src="js/state.js"></script>
 <script src="js/deck.js"></script>
 <script src="js/audio.js"></script>

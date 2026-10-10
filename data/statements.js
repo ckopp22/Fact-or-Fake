@@ -287,7 +287,7 @@
     var out = [];
     CATS.forEach(function (cat) {
       table[cat].forEach(function (r) {
-        out.push({ id: prefix + pad(r[0]), text: r[1], answer: answer, reveal: r[2], cat: cat });
+        out.push({ id: prefix + pad(r[0]), text: r[1], answer: answer, reveal: r[2], cat: cat, diff: 'medium' });
       });
     });
     return out;

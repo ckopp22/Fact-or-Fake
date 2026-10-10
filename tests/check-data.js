@@ -2,10 +2,20 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {} };
-vm.runInNewContext(fs.readFileSync(path.join(root, 'data/statements.js'), 'utf8'), ctx);
-const S = ctx.window.STATEMENTS;
+['statements', 'easy', 'hard'].forEach(f => vm.runInNewContext(fs.readFileSync(path.join(root, `data/${f}.js`), 'utf8'), ctx));
+const ALL = ctx.window.STATEMENTS;
 let bad = 0;
+let S = ALL;
 const fail = m => { bad++; console.log('FAIL:', m); };
+
+['easy', 'medium', 'hard'].forEach(d => {
+  const L = ALL.filter(s => s.diff === d);
+  const t = L.filter(s => s.answer).length;
+  console.log(d, L.length, 'facts', t);
+  if (L.length !== 250 || t !== 125) fail(d + ' counts');
+});
+if (new Set(ALL.map(s => s.id)).size !== ALL.length) fail('duplicate ids across levels');
+S = ALL.filter(s => s.diff === 'medium');
 
 const facts = S.filter(s => s.answer === true), fakes = S.filter(s => s.answer === false);
 console.log(`total ${S.length}, facts ${facts.length}, fakes ${fakes.length}`);

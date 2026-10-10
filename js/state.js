@@ -6,8 +6,9 @@
   var MAX_NAME = 12;
   var INKS = ['#c0392b', '#2c6fbb', '#2e8b57', '#7b4fa0', '#e0782a', '#1f9d9a', '#d6609a', '#7a5230'];
   var TARGETS = [5, 10, 15, 20];
+  var DIFFS = ['easy', 'medium', 'hard'];
 
-  var saved = { names: [], count: 2, target: 10, muted: false, music: true, seen: [] };
+  var saved = { names: [], count: 2, target: 10, diff: 'medium', muted: false, music: true, seen: [] };
 
   function load() {
     try {
@@ -15,6 +16,7 @@
       if (Array.isArray(raw.names)) saved.names = raw.names.slice(0, 8).map(function (n) { return String(n).slice(0, MAX_NAME); });
       if (raw.count >= 2 && raw.count <= 8) saved.count = raw.count | 0;
       if (TARGETS.indexOf(raw.target) >= 0) saved.target = raw.target;
+      if (DIFFS.indexOf(raw.diff) >= 0) saved.diff = raw.diff;
       saved.muted = !!raw.muted;
       if (raw.music === false) saved.music = false;
       if (Array.isArray(raw.seen)) saved.seen = raw.seen.filter(function (x) { return typeof x === 'string'; });
@@ -55,7 +57,7 @@
     });
   }
 
-  function newGame(rawNames, target) {
+  function newGame(rawNames, target, diff) {
     var names = cleanNames(rawNames);
     state.players = names.map(function (name, i) {
       return { id: i, name: name, color: INKS[i], score: 0 };
@@ -64,6 +66,7 @@
     saved.names = rawNames.map(function (n) { return String(n || '').trim().slice(0, MAX_NAME); });
     saved.count = names.length;
     saved.target = target;
+    saved.diff = diff;
     save();
     resetRound();
   }
@@ -114,7 +117,7 @@
 
   FoF.state = state;
   FoF.store = {
-    saved: saved, save: save, INKS: INKS, TARGETS: TARGETS, MAX_NAME: MAX_NAME,
+    saved: saved, save: save, INKS: INKS, TARGETS: TARGETS, DIFFS: DIFFS, MAX_NAME: MAX_NAME,
     defaultName: defaultName, cleanNames: cleanNames, newGame: newGame, replay: replay,
     award: award, undo: undo, standings: standings, setMuted: setMuted, setMusic: setMusic
   };

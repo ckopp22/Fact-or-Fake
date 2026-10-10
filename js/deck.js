@@ -66,11 +66,14 @@
     var saved = FoF.store.saved;
     var seen = {};
     saved.seen.forEach(function (id) { seen[id] = true; });
-    var unseen = window.STATEMENTS.map(function (s) { return s.id; }).filter(function (id) { return !seen[id]; });
+    var level = window.STATEMENTS.filter(function (s) { return s.diff === saved.diff; }).map(function (s) { return s.id; });
+    var unseen = level.filter(function (id) { return !seen[id]; });
     if (!unseen.length) {
-      saved.seen = [];
+      var levelIds = {};
+      level.forEach(function (id) { levelIds[id] = true; });
+      saved.seen = saved.seen.filter(function (id) { return !levelIds[id]; });
       FoF.store.save();
-      unseen = window.STATEMENTS.map(function (s) { return s.id; });
+      unseen = level;
     }
     FoF.state.deck = build(unseen);
   }

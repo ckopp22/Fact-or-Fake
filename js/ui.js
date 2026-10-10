@@ -9,7 +9,7 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var els = {};
-  var setup = { count: 2, names: [], target: 10 };
+  var setup = { count: 2, names: [], target: 10, diff: 'medium' };
   var revealAt = 0;
   var busy = false;
   var timers = [];
@@ -60,6 +60,9 @@
     Array.prototype.forEach.call(els.targetChips.children, function (b) {
       b.setAttribute('aria-checked', String(+b.dataset.target === setup.target));
     });
+    Array.prototype.forEach.call(els.diffChips.children, function (b) {
+      b.setAttribute('aria-checked', String(b.dataset.diff === setup.diff));
+    });
     if (FoF.fit) FoF.fit();
   }
 
@@ -67,6 +70,7 @@
     var s = store.saved;
     setup.count = s.count;
     setup.target = s.target;
+    setup.diff = s.diff;
     for (var i = 0; i < 8; i++) setup.names[i] = s.names[i] || store.defaultName(i);
     renderSetup();
   }
@@ -90,13 +94,19 @@
       setup.target = +b.dataset.target;
       renderSetup();
     });
+    els.diffChips.addEventListener('click', function (e) {
+      var b = e.target.closest('.target-chip');
+      if (!b) return;
+      setup.diff = b.dataset.diff;
+      renderSetup();
+    });
     $('btn-start').addEventListener('click', startGame);
   }
 
   /* ---------------- gameplay ---------------- */
 
   function startGame() {
-    store.newGame(setup.names.slice(0, setup.count), setup.target);
+    store.newGame(setup.names.slice(0, setup.count), setup.target, setup.diff);
     FoF.deck.refill();
     beginPlay();
   }
@@ -350,6 +360,7 @@
   function init() {
     els.nameList = $('name-list');
     els.targetChips = $('target-chips');
+    els.diffChips = $('diff-chips');
     els.chips = $('chips');
     if (FoF.paper) FoF.paper.init();
     els.card = $('card');
